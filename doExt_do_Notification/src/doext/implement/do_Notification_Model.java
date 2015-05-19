@@ -1,9 +1,11 @@
 package doext.implement;
 
+import org.json.JSONObject;
+
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import core.helper.jsonparse.DoJsonNode;
+import core.helper.DoJsonHelper;
 import core.interfaces.DoIScriptEngine;
 import core.object.DoInvokeResult;
 import core.object.DoSingletonModule;
@@ -30,7 +32,7 @@ public class do_Notification_Model extends DoSingletonModule implements do_Notif
 	 * @_invokeResult 用于返回方法结果对象
 	 */
 	@Override
-	public boolean invokeSyncMethod(String _methodName, DoJsonNode _dictParas,
+	public boolean invokeSyncMethod(String _methodName, JSONObject _dictParas,
 			DoIScriptEngine _scriptEngine, DoInvokeResult _invokeResult)
 			throws Exception {
 		//...do something
@@ -51,7 +53,7 @@ public class do_Notification_Model extends DoSingletonModule implements do_Notif
 	 * 获取DoInvokeResult对象方式new DoInvokeResult(this.model.getUniqueKey());
 	 */
 	@Override
-	public boolean invokeAsyncMethod(String _methodName, DoJsonNode _dictParas,
+	public boolean invokeAsyncMethod(String _methodName, JSONObject _dictParas,
 			DoIScriptEngine _scriptEngine, String _callbackFuncName) throws Exception {
 		if ("toast".equals(_methodName)) {
 			toast(_dictParas, _scriptEngine, _callbackFuncName);
@@ -76,9 +78,9 @@ public class do_Notification_Model extends DoSingletonModule implements do_Notif
 	 * @_callbackFuncName 回调函数名
 	 */
 	@Override
-	public void alert(DoJsonNode _dictParas, final DoIScriptEngine _scriptEngine,final String _callbackFuncName) throws Exception {
-		String _title = _dictParas.getOneText("title", "");
-		String _content = _dictParas.getOneText("text", "");
+	public void alert(JSONObject _dictParas, final DoIScriptEngine _scriptEngine,final String _callbackFuncName) throws Exception {
+		String _title = DoJsonHelper.getString(_dictParas,"title", "");
+		String _content = DoJsonHelper.getString(_dictParas,"text", "");
 		Activity _activity = (Activity) _scriptEngine.getCurrentPage().getPageView();
 		final AlertDialog.Builder builder = new AlertDialog.Builder(_activity);
 		builder.setMessage(_content).setTitle(_title).setCancelable(false).setPositiveButton("确定", new DialogInterface.OnClickListener() {
@@ -103,11 +105,11 @@ public class do_Notification_Model extends DoSingletonModule implements do_Notif
 	 * @_callbackFuncName 回调函数名
 	 */
 	@Override
-	public void confirm(DoJsonNode _dictParas, final DoIScriptEngine _scriptEngine, final String _callbackFuncName) throws Exception {
-		String _title = _dictParas.getOneText("title", "");
-		String _content = _dictParas.getOneText("text", "");
-		String _button1text = _dictParas.getOneText("button1text", "确定");
-		String _button2text = _dictParas.getOneText("button2text", "取消");
+	public void confirm(JSONObject _dictParas, final DoIScriptEngine _scriptEngine, final String _callbackFuncName) throws Exception {
+		String _title = DoJsonHelper.getString(_dictParas,"title", "");
+		String _content = DoJsonHelper.getString(_dictParas,"text", "");
+		String _button1text = DoJsonHelper.getString(_dictParas,"button1text", "确定");
+		String _button2text = DoJsonHelper.getString(_dictParas,"button2text", "取消");
 		Activity _activity = (Activity) _scriptEngine.getCurrentPage().getPageView();
 		final AlertDialog.Builder builder = new AlertDialog.Builder(_activity);
 		final DoInvokeResult _invokeResult = new DoInvokeResult(getUniqueKey());
@@ -148,8 +150,8 @@ public class do_Notification_Model extends DoSingletonModule implements do_Notif
 	 * @_callbackFuncName 回调函数名
 	 */
 	@Override
-	public void toast(DoJsonNode _dictParas, DoIScriptEngine _scriptEngine,String _callbackFuncName) throws Exception {
-		final String _text = _dictParas.getOneText("text", "");
+	public void toast(JSONObject _dictParas, DoIScriptEngine _scriptEngine,String _callbackFuncName) throws Exception {
+		final String _text = DoJsonHelper.getString(_dictParas,"text", "");
 		final Activity _activity = (Activity) _scriptEngine.getCurrentPage().getPageView();
 		_activity.runOnUiThread(new Runnable() {
 			@Override
