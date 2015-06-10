@@ -5,6 +5,7 @@ import org.json.JSONObject;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import core.DoServiceContainer;
 import core.helper.DoJsonHelper;
 import core.interfaces.DoIScriptEngine;
 import core.object.DoInvokeResult;
@@ -81,7 +82,7 @@ public class do_Notification_Model extends DoSingletonModule implements do_Notif
 	public void alert(JSONObject _dictParas, final DoIScriptEngine _scriptEngine,final String _callbackFuncName) throws Exception {
 		String _title = DoJsonHelper.getString(_dictParas,"title", "");
 		String _content = DoJsonHelper.getString(_dictParas,"text", "");
-		Activity _activity = (Activity) _scriptEngine.getCurrentPage().getPageView();
+		Activity _activity = (Activity) DoServiceContainer.getPageViewFactory().getAppContext();
 		final AlertDialog.Builder builder = new AlertDialog.Builder(_activity);
 		builder.setMessage(_content).setTitle(_title).setCancelable(false).setPositiveButton("确定", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
@@ -110,7 +111,7 @@ public class do_Notification_Model extends DoSingletonModule implements do_Notif
 		String _content = DoJsonHelper.getString(_dictParas,"text", "");
 		String _button1text = DoJsonHelper.getString(_dictParas,"button1text", "确定");
 		String _button2text = DoJsonHelper.getString(_dictParas,"button2text", "取消");
-		Activity _activity = (Activity) _scriptEngine.getCurrentPage().getPageView();
+		Activity _activity = (Activity) DoServiceContainer.getPageViewFactory().getAppContext();
 		final AlertDialog.Builder builder = new AlertDialog.Builder(_activity);
 		final DoInvokeResult _invokeResult = new DoInvokeResult(getUniqueKey());
 		builder.setMessage(_content).setTitle(_title).setCancelable(false).setPositiveButton(_button1text, new DialogInterface.OnClickListener() {
@@ -152,7 +153,7 @@ public class do_Notification_Model extends DoSingletonModule implements do_Notif
 	@Override
 	public void toast(JSONObject _dictParas, DoIScriptEngine _scriptEngine,String _callbackFuncName) throws Exception {
 		final String _text = DoJsonHelper.getString(_dictParas,"text", "");
-		final Activity _activity = (Activity) _scriptEngine.getCurrentPage().getPageView();
+		final Activity _activity = (Activity) DoServiceContainer.getPageViewFactory().getAppContext();
 		_activity.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
