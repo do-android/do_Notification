@@ -113,7 +113,7 @@ public class do_Notification_Model extends DoSingletonModule implements do_Notif
 		Activity _activity = (Activity) _scriptEngine.getCurrentPage().getPageView();
 		final AlertDialog.Builder builder = new AlertDialog.Builder(_activity);
 		final DoInvokeResult _invokeResult = new DoInvokeResult(getUniqueKey());
-		builder.setMessage(_content).setTitle(_title).setCancelable(false).setPositiveButton(_button1text, new DialogInterface.OnClickListener() {
+		builder.setMessage(_content).setTitle(_title).setCancelable(false).setNeutralButton(_button1text, new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
 				try {
 					_invokeResult.setResultInteger(1);
@@ -122,7 +122,7 @@ public class do_Notification_Model extends DoSingletonModule implements do_Notif
 					throw new RuntimeException("confirm", e);
 				}
 			}
-		}).setNeutralButton(_button2text, new DialogInterface.OnClickListener() {
+		}).setPositiveButton(_button2text, new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				try {
