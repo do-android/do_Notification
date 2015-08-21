@@ -114,8 +114,9 @@ public class do_Notification_Model extends DoSingletonModule implements do_Notif
 		Activity _activity = (Activity) DoServiceContainer.getPageViewFactory().getAppContext();
 		final AlertDialog.Builder builder = new AlertDialog.Builder(_activity);
 		final DoInvokeResult _invokeResult = new DoInvokeResult(getUniqueKey());
-		builder.setMessage(_content).setTitle(_title).setCancelable(false).setNeutralButton(_button1text, new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int id) {
+		builder.setMessage(_content).setTitle(_title).setCancelable(false).setPositiveButton(_button1text, new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
 				try {
 					_invokeResult.setResultInteger(1);
 					_scriptEngine.callback(_callbackFuncName, _invokeResult);
@@ -123,9 +124,8 @@ public class do_Notification_Model extends DoSingletonModule implements do_Notif
 					throw new RuntimeException("confirm", e);
 				}
 			}
-		}).setPositiveButton(_button2text, new DialogInterface.OnClickListener() {
-			@Override
-			public void onClick(DialogInterface dialog, int which) {
+		}).setNegativeButton(_button2text, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int id) {
 				try {
 					_invokeResult.setResultInteger(2);
 					_scriptEngine.callback(_callbackFuncName, _invokeResult);
