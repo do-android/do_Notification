@@ -36,7 +36,10 @@ public class do_Notification_Model extends DoSingletonModule implements do_Notif
 	public boolean invokeSyncMethod(String _methodName, JSONObject _dictParas,
 			DoIScriptEngine _scriptEngine, DoInvokeResult _invokeResult)
 			throws Exception {
-		//...do something
+		if ("toast".equals(_methodName)) {
+			this.toast(_dictParas, _scriptEngine, _invokeResult);
+			return true;
+		}
 		return super.invokeSyncMethod(_methodName, _dictParas, _scriptEngine, _invokeResult);
 	}
 	
@@ -56,10 +59,7 @@ public class do_Notification_Model extends DoSingletonModule implements do_Notif
 	@Override
 	public boolean invokeAsyncMethod(String _methodName, JSONObject _dictParas,
 			DoIScriptEngine _scriptEngine, String _callbackFuncName) throws Exception {
-		if ("toast".equals(_methodName)) {
-			toast(_dictParas, _scriptEngine, _callbackFuncName);
-			return true;
-		}
+	
 		if ("alert".equals(_methodName)) {
 			alert(_dictParas, _scriptEngine, _callbackFuncName);
 			return true;
@@ -151,7 +151,7 @@ public class do_Notification_Model extends DoSingletonModule implements do_Notif
 	 * @_callbackFuncName 回调函数名
 	 */
 	@Override
-	public void toast(JSONObject _dictParas, DoIScriptEngine _scriptEngine,String _callbackFuncName) throws Exception {
+	public void toast(JSONObject _dictParas, DoIScriptEngine _scriptEngine,DoInvokeResult _invokeResult) throws Exception {
 		final String _text = DoJsonHelper.getString(_dictParas,"text", "");
 		final Activity _activity = (Activity) DoServiceContainer.getPageViewFactory().getAppContext();
 		_activity.runOnUiThread(new Runnable() {
