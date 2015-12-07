@@ -159,15 +159,15 @@ public class do_Notification_Model extends DoSingletonModule implements do_Notif
 		final String _text = DoJsonHelper.getString(_dictParas, "text", "");
 		final double _xZoom = _scriptEngine.getCurrentPage().getRootView().getXZoom();
 		final double _yZoom = _scriptEngine.getCurrentPage().getRootView().getYZoom();
-		final int _x = (int) (DoJsonHelper.getInt(_dictParas, "x", -1) * _xZoom);
-		final int _y = (int) (DoJsonHelper.getInt(_dictParas, "y", -1) * _yZoom);
+		final int _x = DoJsonHelper.getInt(_dictParas, "x", -1);
+		final int _y = DoJsonHelper.getInt(_dictParas, "y", -1);
 		final Activity _activity = (Activity) DoServiceContainer.getPageViewFactory().getAppContext();
 		_activity.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
 				Toast _mToast = Toast.makeText(_activity, _text, android.widget.Toast.LENGTH_SHORT);
 				if (_x >= 0 || _y >= 0) {
-					_mToast.setGravity(Gravity.LEFT | Gravity.TOP, _x, _y);
+					_mToast.setGravity(Gravity.LEFT | Gravity.TOP, (int) (_x * _xZoom), (int) (_y * _yZoom));
 				}
 				_mToast.show();
 			}
