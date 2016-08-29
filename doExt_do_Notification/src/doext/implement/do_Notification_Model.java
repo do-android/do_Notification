@@ -9,6 +9,7 @@ import android.view.Gravity;
 import android.widget.Toast;
 import core.DoServiceContainer;
 import core.helper.DoJsonHelper;
+import core.interfaces.DoIPage;
 import core.interfaces.DoIScriptEngine;
 import core.object.DoInvokeResult;
 import core.object.DoSingletonModule;
@@ -157,8 +158,7 @@ public class do_Notification_Model extends DoSingletonModule implements do_Notif
 	@Override
 	public void toast(JSONObject _dictParas, DoIScriptEngine _scriptEngine, DoInvokeResult _invokeResult) throws Exception {
 		final String _text = DoJsonHelper.getString(_dictParas, "text", "");
-		final double _xZoom = _scriptEngine.getCurrentPage().getRootView().getXZoom();
-		final double _yZoom = _scriptEngine.getCurrentPage().getRootView().getYZoom();
+		final DoIPage _page = _scriptEngine.getCurrentPage();
 		final int _x = DoJsonHelper.getInt(_dictParas, "x", -1);
 		final int _y = DoJsonHelper.getInt(_dictParas, "y", -1);
 		final Activity _activity = (Activity) DoServiceContainer.getPageViewFactory().getAppContext();
@@ -166,7 +166,9 @@ public class do_Notification_Model extends DoSingletonModule implements do_Notif
 			@Override
 			public void run() {
 				Toast _mToast = Toast.makeText(_activity, _text, android.widget.Toast.LENGTH_SHORT);
-				if (_x >= 0 || _y >= 0) {
+				if (_page != null && (_x >= 0 || _y >= 0)) {
+					double _xZoom = _page.getRootView().getXZoom();
+					double _yZoom = _page.getRootView().getYZoom();
 					_mToast.setGravity(Gravity.LEFT | Gravity.TOP, (int) (_x * _xZoom), (int) (_y * _yZoom));
 				}
 				_mToast.show();
