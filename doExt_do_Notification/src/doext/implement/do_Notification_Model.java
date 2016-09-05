@@ -24,6 +24,8 @@ import doext.define.do_Notification_IMethod;
  */
 public class do_Notification_Model extends DoSingletonModule implements do_Notification_IMethod {
 
+	private Toast mToast;
+
 	public do_Notification_Model() throws Exception {
 		super();
 	}
@@ -165,13 +167,15 @@ public class do_Notification_Model extends DoSingletonModule implements do_Notif
 		_activity.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				Toast _mToast = Toast.makeText(_activity, _text, android.widget.Toast.LENGTH_SHORT);
+				if (mToast == null) {
+					mToast = Toast.makeText(_activity, _text, android.widget.Toast.LENGTH_SHORT);
+				}
 				if (_page != null && (_x >= 0 || _y >= 0)) {
 					double _xZoom = _page.getRootView().getXZoom();
 					double _yZoom = _page.getRootView().getYZoom();
-					_mToast.setGravity(Gravity.LEFT | Gravity.TOP, (int) (_x * _xZoom), (int) (_y * _yZoom));
+					mToast.setGravity(Gravity.LEFT | Gravity.TOP, (int) (_x * _xZoom), (int) (_y * _yZoom));
 				}
-				_mToast.show();
+				mToast.show();
 			}
 		});
 	}
