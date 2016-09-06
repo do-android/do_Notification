@@ -170,6 +170,7 @@ public class do_Notification_Model extends DoSingletonModule implements do_Notif
 				if (mToast == null) {
 					mToast = Toast.makeText(_activity, _text, android.widget.Toast.LENGTH_SHORT);
 				}
+				mToast.setText(_text);
 				if (_page != null && (_x >= 0 || _y >= 0)) {
 					double _xZoom = _page.getRootView().getXZoom();
 					double _yZoom = _page.getRootView().getYZoom();
