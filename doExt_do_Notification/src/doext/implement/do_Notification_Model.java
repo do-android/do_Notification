@@ -6,9 +6,11 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.view.Gravity;
+import android.view.View;
 import android.widget.Toast;
 import core.DoServiceContainer;
 import core.helper.DoJsonHelper;
+import core.helper.DoUIModuleHelper;
 import core.interfaces.DoIPage;
 import core.interfaces.DoIScriptEngine;
 import core.object.DoInvokeResult;
@@ -174,7 +176,25 @@ public class do_Notification_Model extends DoSingletonModule implements do_Notif
 				if (_page != null && (_x >= 0 || _y >= 0)) {
 					double _xZoom = _page.getRootView().getXZoom();
 					double _yZoom = _page.getRootView().getYZoom();
-					mToast.setGravity(Gravity.LEFT | Gravity.TOP, (int) (_x * _xZoom), (int) (_y * _yZoom));
+					double _realX = _x * _xZoom;
+					double _realY = _y * _yZoom;
+
+					View view = mToast.getView();
+					if (view != null) {
+						DoUIModuleHelper.measureView(view);
+					}
+
+					if (_x >= 0 && _y < 0) { //只设置了x坐标 y居中
+						int _viewHeight = view.getMeasuredHeight();
+						_realY = (DoServiceContainer.getGlobal().getScreenHeight() - _viewHeight) / 2;
+					}
+
+					if (_y >= 0 && _x < 0) { //只设置了y坐标 x居中
+						int _viewWidth = view.getMeasuredWidth();
+						_realX = (DoServiceContainer.getGlobal().getScreenWidth() - _viewWidth) / 2;
+					}
+
+					mToast.setGravity(Gravity.LEFT | Gravity.TOP, (int) _realX, (int) _realY);
 				}
 				mToast.show();
 			}
