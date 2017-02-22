@@ -89,7 +89,8 @@ public class do_Notification_Model extends DoSingletonModule implements do_Notif
 	public void alert(JSONObject _dictParas, final DoIScriptEngine _scriptEngine, final String _callbackFuncName) throws Exception {
 		String _title = DoJsonHelper.getString(_dictParas, "title", "");
 		String _content = DoJsonHelper.getString(_dictParas, "text", "");
-		Activity _activity = (Activity) DoServiceContainer.getPageViewFactory().getAppContext();
+		final Activity _activity = (Activity) DoServiceContainer.getPageViewFactory().getAppContext();
+
 		final AlertDialog.Builder builder = new AlertDialog.Builder(_activity);
 		builder.setMessage(_content).setTitle(_title).setCancelable(false).setPositiveButton("确定", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
@@ -99,8 +100,10 @@ public class do_Notification_Model extends DoSingletonModule implements do_Notif
 		_activity.runOnUiThread(new Runnable() {
 			@Override
 			public void run() {
-				AlertDialog alert = builder.create();
-				alert.show();
+				if (!_activity.isFinishing()) {
+					AlertDialog alert = builder.create();
+					alert.show();
+				}
 			}
 		});
 	}
@@ -184,12 +187,12 @@ public class do_Notification_Model extends DoSingletonModule implements do_Notif
 						DoUIModuleHelper.measureView(view);
 					}
 
-					if (_x >= 0 && _y < 0) { //只设置了x坐标 y居中
+					if (_x >= 0 && _y < 0) { // 只设置了x坐标 y居中
 						int _viewHeight = view.getMeasuredHeight();
 						_realY = (DoServiceContainer.getGlobal().getScreenHeight() - _viewHeight) / 2;
 					}
 
-					if (_y >= 0 && _x < 0) { //只设置了y坐标 x居中
+					if (_y >= 0 && _x < 0) { // 只设置了y坐标 x居中
 						int _viewWidth = view.getMeasuredWidth();
 						_realX = (DoServiceContainer.getGlobal().getScreenWidth() - _viewWidth) / 2;
 					}
