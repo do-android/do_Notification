@@ -89,10 +89,11 @@ public class do_Notification_Model extends DoSingletonModule implements do_Notif
 	public void alert(JSONObject _dictParas, final DoIScriptEngine _scriptEngine, final String _callbackFuncName) throws Exception {
 		String _title = DoJsonHelper.getString(_dictParas, "title", "");
 		String _content = DoJsonHelper.getString(_dictParas, "text", "");
+		String _buttontext = DoJsonHelper.getString(_dictParas, "buttontext", "确定");
 		final Activity _activity = (Activity) DoServiceContainer.getPageViewFactory().getAppContext();
 
 		final AlertDialog.Builder builder = new AlertDialog.Builder(_activity);
-		builder.setMessage(_content).setTitle(_title).setCancelable(false).setPositiveButton("确定", new DialogInterface.OnClickListener() {
+		builder.setMessage(_content).setTitle(_title).setCancelable(false).setPositiveButton(_buttontext.length() > 0 ? _buttontext : "确定", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int id) {
 				_scriptEngine.callback(_callbackFuncName, new DoInvokeResult(getUniqueKey()));
 			}
